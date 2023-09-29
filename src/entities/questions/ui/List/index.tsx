@@ -82,7 +82,7 @@ export const QuestionsList: FC<IQuestionsListProps> = ({data, onSubmit}) => {
         </div>
       </div>
       <span className={cn(styles.error, {[styles.hide]: !error})}>
-        Выберите хотя один из вариантов ответа
+        Выберите хотя бы один из вариантов ответа
       </span>
       <div className={styles.btns}>
         <button

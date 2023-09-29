@@ -10,8 +10,6 @@
     gap: 10px;
     align-items: start;
 
-    max-height: 15px;
-
 
     &.active {
       cursor: default;
@@ -74,7 +72,7 @@
       font-size: 15px;
       font-weight: 400;
       font-style: normal;
-      line-height: normal;
+      line-height: 15px;
       color: #000;
     }
 
