@@ -25,9 +25,11 @@ export const RadioSelect: FC<IRadioSelect> = ({
 
   const mappedItems = data.map((el, index) => {
     const handleSetSelectedValue = () => {
-      setSelectedValue(el)
-      if (onChange) {
-        onChange(el)
+      if (el !== defaultValue) {
+        setSelectedValue(el)
+        if (onChange) {
+          onChange(el)
+        }
       }
     }
 

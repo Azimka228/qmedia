@@ -1,7 +1,6 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 35px;
 
   max-width: 868px;
   padding: 34px 35px 65px 35px;
@@ -9,24 +8,49 @@
   background: #DDF3FF;
   border-radius: 10px;
 
-  > .title {
+
+  > .content {
     display: flex;
+    flex-direction: column;
+    gap: 35px;
 
-    color: #000;
+    > .title {
+      display: flex;
 
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+      font-size: 20px;
+      font-weight: 700;
+      font-style: normal;
+      line-height: normal;
+      color: #000;
+    }
+
+
   }
 
-  > .radioSelect {
-    min-height: 135px;
+  > .error {
+    display: flex;
+    align-items: center;
+
+    height: 35px;
+
+    font-size: 12px;
+    color: red;
+
+    visibility: visible;
+    opacity: 1;
+
+    transition: 0.5s ease visibility, 0.5s ease opacity;
+
+    &.hide {
+      visibility: hidden;
+      opacity: 0;
+    }
   }
 
   > .btns {
     display: flex;
     gap: 10px;
+
 
     > .prevButton {
       color: #000;
