@@ -12,7 +12,11 @@
   > .content {
     display: flex;
     flex-direction: column;
-    gap: 35px;
+    gap: 33px;
+
+    > .radioSelect {
+      min-height: 135px;
+    }
 
     > .title {
       display: flex;
@@ -63,6 +67,7 @@
     }
 
     button {
+      user-select: none;
       cursor: pointer;
 
       padding: 10px 15px;
@@ -70,7 +75,7 @@
       font-size: 15px;
       font-weight: 700;
       font-style: normal;
-      line-height: normal;
+      line-height: 11px;
       text-align: center;
 
       border: unset;
