@@ -1,0 +1,78 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  > .item {
+    cursor: pointer;
+
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    max-height: 15px;
+
+
+    &.active {
+      cursor: default;
+
+      &:hover {
+
+        > .circle {
+          border: 1px solid #00A5FF;
+        }
+
+      }
+
+      > .circle {
+        background: #FFF;
+        border: 1px solid #00A5FF;
+
+        > .smallCircle {
+          background: #00A5FF;
+        }
+      }
+    }
+
+    &:hover {
+      > .circle {
+        border-color: black;
+      }
+
+    }
+
+    > .circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 15px;
+      height: 15px;
+
+      background: #FFF;
+      border: 1px solid #9A9A9A;
+      border-radius: 50%;
+
+      transition: 0.5s ease border-color;
+
+      > .smallCircle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        transition: 0.5s ease background;
+      }
+
+    }
+
+    > .text {
+      font-size: 15px;
+      font-weight: 400;
+      font-style: normal;
+      line-height: normal;
+      color: #000;
+    }
+
+
+  }
+
+}

@@ -1,9 +1,56 @@
 .main {
   display: flex;
   flex-direction: column;
+  gap: 35px;
 
+  max-width: 868px;
   padding: 34px 35px 65px 35px;
 
   background: #DDF3FF;
   border-radius: 10px;
+
+  > .title {
+    display: flex;
+
+    color: #000;
+
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  > .radioSelect {
+    min-height: 135px;
+  }
+
+  > .btns {
+    display: flex;
+    gap: 10px;
+
+    > .prevButton {
+      color: #000;
+      background: #FFF;
+    }
+
+    > .nextStepButton {
+      color: #FFF;
+      background: #00A5FF;
+    }
+
+    button {
+      cursor: pointer;
+
+      padding: 10px 15px;
+
+      font-size: 15px;
+      font-weight: 700;
+      font-style: normal;
+      line-height: normal;
+      text-align: center;
+
+      border: unset;
+      border-radius: 5px;
+    }
+  }
 }

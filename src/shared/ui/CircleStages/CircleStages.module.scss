@@ -1,0 +1,33 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+
+  > .items {
+    display: flex;
+    gap: 10px;
+
+    > .circle {
+      width: 20px;
+      height: 20px;
+
+      background: #89D1F8;
+      border-radius: 50%;
+
+      transition: 0.5s ease background-color;
+
+      &.active {
+        background: #00A5FF;
+      }
+    }
+  }
+
+  > .title {
+    font-size: 15px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    color: #9A9A9A;
+  }
+}
