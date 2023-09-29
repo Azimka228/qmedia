@@ -2,7 +2,7 @@ import styles from "./Item.module.scss"
 
 import React, {FC} from "react"
 
-import {HeartIcon} from "@entities/product/ui/List/Item/icons"
+import {HeartIcon} from "./icons"
 
 interface IProductListItemProps {
   title: string
@@ -26,7 +26,6 @@ export const ProductListItem: FC<IProductListItemProps> = ({
       <div className={styles.favourite} onClick={onClickFavourite}>
         <HeartIcon isActive={isFavourite} />
       </div>
-
       <img src={image} alt="" className={styles.img} />
     </div>
     <div className={styles.description}>
