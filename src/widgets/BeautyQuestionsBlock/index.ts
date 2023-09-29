@@ -1,0 +1,1 @@
+export {BeautyQuestionsBlock} from "./ui"
