@@ -1,6 +1,6 @@
 import styles from "./ProductList.module.scss"
 
-import React, {useState} from "react"
+import React, {useCallback, useState} from "react"
 
 import {ProductListItem} from "./Item"
 import data from "./products.json"
@@ -21,7 +21,10 @@ export const ProductList = () => {
     pageSize: PAGE_SIZE,
   })
 
-  const handleChangePage = (value: number) => setCurrentPage(value)
+  const handleChangePage = useCallback(
+    (value: number) => setCurrentPage(value),
+    []
+  )
 
   const lastIndex = currentPage * PAGE_SIZE
   const firstIndex = lastIndex - PAGE_SIZE
