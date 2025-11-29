@@ -18,7 +18,15 @@
     border-radius: 6.75px;
 
     > .favourite {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+
       cursor: pointer;
+
+      background: transparent;
+      border: none;
 
       position: absolute;
       top: 15px;

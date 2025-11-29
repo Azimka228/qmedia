@@ -1,6 +1,6 @@
 import styles from "./ProductList.module.scss"
 
-import React, {useCallback, useState} from "react"
+import React, {useCallback, useMemo, useState} from "react"
 
 import {ProductListItem} from "./Item"
 import data from "./products.json"
@@ -21,46 +21,36 @@ export const ProductList = () => {
     pageSize: PAGE_SIZE,
   })
 
-  const handleChangePage = useCallback(
-    (value: number) => setCurrentPage(value),
-    []
-  )
+  const handleChangePage = useCallback((value: number) => setCurrentPage(value), [])
 
-  const lastIndex = currentPage * PAGE_SIZE
-  const firstIndex = lastIndex - PAGE_SIZE
+  const toggleFavouriteItem = useCallback((id: number) => {
+    setFavouriteItems(prevState =>
+      prevState.includes(id)
+        ? prevState.filter(item => item !== id)
+        : [...prevState, id]
+    )
+  }, [])
 
-  const mappedItems = data.map((el, index) => {
-    if (index >= firstIndex && index < lastIndex) {
-      const isFavouriteItem = favouriteItems.includes(el.id)
+  const paginatedItems = useMemo(() => {
+    const lastIndex = currentPage * PAGE_SIZE
+    const firstIndex = lastIndex - PAGE_SIZE
 
-      const handleAddFavouriteItem = () => {
-        if (!favouriteItems.includes(el.id)) {
-          setFavouriteItems(prevState => [...prevState, el.id])
-        }
-        if (favouriteItems.includes(el.id)) {
-          setFavouriteItems(prevState =>
-            prevState.filter(item => item !== el.id)
-          )
-        }
-      }
-      return (
-        <ProductListItem
-          price={el.price}
-          title={el.title}
-          image={el.image}
-          key={el.id}
-          isFavourite={isFavouriteItem}
-          oldPrice={el.oldPrice}
-          onClickFavourite={handleAddFavouriteItem}
-        />
-      )
-    }
-    return null
-  })
+    return data.slice(firstIndex, lastIndex).map(product => (
+      <ProductListItem
+        price={product.price}
+        title={product.title}
+        image={product.image}
+        key={product.id}
+        isFavourite={favouriteItems.includes(product.id)}
+        oldPrice={product.oldPrice}
+        onClickFavourite={() => toggleFavouriteItem(product.id)}
+      />
+    ))
+  }, [currentPage, favouriteItems, toggleFavouriteItem])
 
   return (
     <div className={styles.main}>
-      <div className={styles.content}>{mappedItems}</div>
+      <div className={styles.content}>{paginatedItems}</div>
       <Pagination
         currentPage={currentPage}
         data={paginationRang}
