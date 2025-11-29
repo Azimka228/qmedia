@@ -2,6 +2,8 @@ import styles from "./Item.module.scss"
 
 import React, {FC} from "react"
 
+import Image from "next/image"
+
 import {HeartIcon} from "./icons"
 
 interface IProductListItemProps {
@@ -13,35 +15,35 @@ interface IProductListItemProps {
   onClickFavourite?: () => void
 }
 
-const areEqual = (
-  prevProps: IProductListItemProps,
-  nextProps: IProductListItemProps
-) =>
-  prevProps.isFavourite === nextProps.isFavourite &&
-  prevProps.onClickFavourite?.toString() ===
-    nextProps.onClickFavourite?.toString()
-
-export const ProductListItem: FC<IProductListItemProps> = React.memo(
-  ({title, image, price, oldPrice, isFavourite = false, onClickFavourite}) => (
-    <div className={styles.main}>
-      <div className={styles.imgWrapper}>
-        <div className={styles.favourite} onClick={onClickFavourite}>
-          <HeartIcon isActive={isFavourite} />
-        </div>
-        <img src={image} alt="" className={styles.img} />
+export const ProductListItem: FC<IProductListItemProps> = ({
+  title,
+  image,
+  price,
+  oldPrice,
+  isFavourite = false,
+  onClickFavourite,
+}) => (
+  <div className={styles.main}>
+    <div className={styles.imgWrapper}>
+      <div className={styles.favourite} onClick={onClickFavourite}>
+        <HeartIcon isActive={isFavourite} />
       </div>
-      <div className={styles.description}>
-        <span className={styles.title}>{title}</span>
-        <div className={styles.priceBlock}>
-          {oldPrice && <span className={styles.oldPrice}>{oldPrice}</span>}
-          <span className={styles.price}>
-            {price} <span className={styles.wallet}> руб.</span>
-          </span>
-        </div>
+      <Image
+        fill
+        alt={title}
+        src={image}
+        className={styles.img}
+        sizes="(max-width: 768px) 100vw, 240px"
+      />
+    </div>
+    <div className={styles.description}>
+      <span className={styles.title}>{title}</span>
+      <div className={styles.priceBlock}>
+        {oldPrice && <span className={styles.oldPrice}>{oldPrice}</span>}
+        <span className={styles.price}>
+          {price} <span className={styles.wallet}> руб.</span>
+        </span>
       </div>
     </div>
-  ),
-  areEqual
+  </div>
 )
-
-ProductListItem.displayName = "ProductListItem"
