@@ -1,45 +1,45 @@
 import styles from "./QuestionsList.module.scss"
 
-import React, {FC, useEffect, useState} from "react"
+import React, {FC, useEffect, useMemo, useState} from "react"
 
 import cn from "classnames"
 
 import {CircleStages} from "@shared/ui"
 import {RadioSelect} from "@shared/ui/RadioSelect"
 
-interface IQuestionList {
-  id: number
-  title: string
-  answers: string[]
-}
-
-interface IAnswerList {
-  id: number
-  title: string
-  answer: string | null
-}
+import {AnsweredQuestion, Question} from "../../types"
 
 interface IQuestionsListProps {
-  data: IQuestionList[]
+  data: Question[]
   onSubmit: () => void
 }
 
 export const QuestionsList: FC<IQuestionsListProps> = ({data, onSubmit}) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [answers, setAnswers] = useState<IAnswerList[]>()
+  const [answers, setAnswers] = useState<AnsweredQuestion[]>([])
   const [error, setError] = useState(false)
 
+  const initialAnswers = useMemo<AnsweredQuestion[]>(
+    () => data.map(({id, title}) => ({id, title, answer: null})),
+    [data]
+  )
+
   useEffect(() => {
-    setAnswers(data.map(el => ({id: el.id, title: el.title, answer: null})))
-  }, [data])
+    setAnswers(initialAnswers)
+    setSelectedIndex(0)
+    setError(false)
+  }, [initialAnswers])
 
   const handleSetNextIndex = () => {
-    if (answers && answers[selectedIndex].answer !== null) {
-      setSelectedIndex(prevState => prevState + 1)
-      setError(false)
-    } else {
+    const hasAnswer = answers[selectedIndex]?.answer !== null
+
+    if (!hasAnswer) {
       setError(true)
+      return
     }
+
+    setSelectedIndex(prevState => Math.min(prevState + 1, data.length - 1))
+    setError(false)
   }
   const handleSetPrevIndex = () => {
     if (selectedIndex > 0) {
@@ -49,33 +49,37 @@ export const QuestionsList: FC<IQuestionsListProps> = ({data, onSubmit}) => {
   }
 
   const handleSetAnswer = (value: string) => {
-    if (answers) {
-      const newArray: IAnswerList[] = [...answers]
-      newArray[selectedIndex].answer = value
-      setAnswers(newArray)
-    }
+    setAnswers(prevState =>
+      prevState.map((answer, index) =>
+        index === selectedIndex ? {...answer, answer: value} : answer
+      )
+    )
+    setError(false)
   }
 
   const handleSubmit = () => {
-    if (answers && answers[selectedIndex].answer !== null) {
-      onSubmit()
-      setError(false)
-    } else {
+    const hasAnswer = answers[selectedIndex]?.answer !== null
+
+    if (!hasAnswer) {
       setError(true)
+      return
     }
+
+    onSubmit()
+    setError(false)
   }
 
-  const radioSelectDefaultValue =
-    (answers && answers[selectedIndex]?.answer) ?? ""
+  const currentQuestion = data[selectedIndex]
+  const radioSelectDefaultValue = answers[selectedIndex]?.answer ?? ""
 
   return (
     <div className={styles.main}>
       <div className={styles.content}>
         <CircleStages countItems={data.length} selectedItem={selectedIndex} />
-        <span className={styles.title}>{data[selectedIndex].title}</span>
+        <span className={styles.title}>{currentQuestion.title}</span>
         <div className={styles.radioSelect}>
           <RadioSelect
-            data={data[selectedIndex].answers}
+            data={currentQuestion.answers}
             defaultValue={radioSelectDefaultValue}
             onChange={handleSetAnswer}
           />

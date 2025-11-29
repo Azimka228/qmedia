@@ -4,6 +4,8 @@ import React, {FC} from "react"
 
 import cn from "classnames"
 
+import {DOTS} from "@shared/hooks"
+
 interface IPaginationProps {
   currentPage: number
   data: (string | number)[]
@@ -14,17 +16,17 @@ export const Pagination: FC<IPaginationProps> = React.memo(
   ({data, currentPage, onChange}) => {
     const mappedItems = data.map((el, index) => {
       const handleChangePage = () => {
-        if (el !== "..." && onChange) {
+        if (el !== DOTS && onChange) {
           onChange(el as number)
         }
       }
 
       const itemClasses = cn(styles.item, {
         [styles.active]: el === currentPage,
-        [styles.dots]: el === "...",
+        [styles.dots]: el === DOTS,
       })
       return (
-        <div key={index} onClick={handleChangePage} className={itemClasses}>
+        <div key={`${el}-${index}`} onClick={handleChangePage} className={itemClasses}>
           {el}
         </div>
       )
