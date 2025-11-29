@@ -1,11 +1,15 @@
 "use client"
 
-import React, {useState} from "react"
+import React, {useMemo, useState} from "react"
 
 import {ProductList} from "@entities/product"
-import {QuestionsList, QuestionsListWrapper} from "@entities/questions"
+import {
+  Question,
+  QuestionsList,
+  QuestionsListWrapper,
+} from "@entities/questions"
 
-const QuestionsListData = [
+const QUESTIONS_LIST_DATA: Question[] = [
   {
     id: 1,
     title: "Сколько вам лет?",
@@ -32,19 +36,29 @@ const QuestionsListData = [
 export const BeautyQuestionsBlock = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
+  const {title, description} = useMemo(() => {
+    if (isSubmitted) {
+      return {
+        title: "Результат",
+        description: "Мы подобрали для вас наиболее подходящие средства",
+      }
+    }
+
+    return {
+      title: "Онлайн-подбор средств для лица",
+      description:
+        "Пройдите короткий тест и получите список наиболее подходящих для вас косметических продуктов",
+    }
+  }, [isSubmitted])
+
   const handleSubmit = () => {
     setIsSubmitted(true)
   }
 
-  const title = isSubmitted ? "Результат" : "Онлайн-подбор средств для лица"
-  const description = isSubmitted
-    ? "Мы подобрали для вас наиболее подходящие средства"
-    : "Пройдите короткий тест и получите список наиболее подходящих для вас косметических продуктов"
-
   const content = isSubmitted ? (
     <ProductList />
   ) : (
-    <QuestionsList data={QuestionsListData} onSubmit={handleSubmit} />
+    <QuestionsList data={QUESTIONS_LIST_DATA} onSubmit={handleSubmit} />
   )
 
   return (

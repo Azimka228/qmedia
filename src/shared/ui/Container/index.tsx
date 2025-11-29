@@ -10,5 +10,5 @@ interface IContainerProps {
 }
 
 export const Container: FC<IContainerProps> = ({className, children}) => (
-  <div className={cn(className, styles.main)}>{children}</div>
+  <div className={cn(styles.main, className)}>{children}</div>
 )

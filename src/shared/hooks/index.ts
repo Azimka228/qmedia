@@ -1,1 +1,1 @@
-export {usePagination} from "./usePagination"
+export {DOTS, usePagination} from "./usePagination"
