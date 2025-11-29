@@ -1,6 +1,6 @@
 import styles from "./ProductList.module.scss"
 
-import React, {useCallback, useState} from "react"
+import React, {useCallback, useMemo, useState} from "react"
 
 import {ProductListItem} from "./Item"
 import data from "./products.json"
@@ -10,6 +10,7 @@ import {Pagination} from "@shared/ui"
 
 const PAGE_SIZE = 10
 const SIBLING_COUNT = 1
+const normalizeImagePath = (image: string) => image.replace(/^\.\//, "/")
 
 export const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -21,41 +22,39 @@ export const ProductList = () => {
     pageSize: PAGE_SIZE,
   })
 
-  const handleChangePage = useCallback(
-    (value: number) => setCurrentPage(value),
-    []
-  )
+  const handleChangePage = useCallback((value: number) => setCurrentPage(value), [])
 
   const lastIndex = currentPage * PAGE_SIZE
   const firstIndex = lastIndex - PAGE_SIZE
 
-  const mappedItems = data.map((el, index) => {
-    if (index >= firstIndex && index < lastIndex) {
-      const isFavouriteItem = favouriteItems.includes(el.id)
+  const pagedItems = useMemo(
+    () => data.slice(firstIndex, lastIndex),
+    [firstIndex, lastIndex]
+  )
 
-      const handleAddFavouriteItem = () => {
-        if (!favouriteItems.includes(el.id)) {
-          setFavouriteItems(prevState => [...prevState, el.id])
-        }
-        if (favouriteItems.includes(el.id)) {
-          setFavouriteItems(prevState =>
-            prevState.filter(item => item !== el.id)
-          )
-        }
-      }
-      return (
-        <ProductListItem
-          price={el.price}
-          title={el.title}
-          image={el.image}
-          key={el.id}
-          isFavourite={isFavouriteItem}
-          oldPrice={el.oldPrice}
-          onClickFavourite={handleAddFavouriteItem}
-        />
-      )
-    }
-    return null
+  const toggleFavouriteItem = useCallback((id: number) => {
+    setFavouriteItems(prevState =>
+      prevState.includes(id)
+        ? prevState.filter(item => item !== id)
+        : [...prevState, id]
+    )
+  }, [])
+
+  const mappedItems = pagedItems.map(item => {
+    const isFavouriteItem = favouriteItems.includes(item.id)
+    const handleFavouriteClick = () => toggleFavouriteItem(item.id)
+
+    return (
+      <ProductListItem
+        price={item.price}
+        title={item.title}
+        image={normalizeImagePath(item.image)}
+        key={item.id}
+        isFavourite={isFavouriteItem}
+        oldPrice={item.oldPrice}
+        onClickFavourite={handleFavouriteClick}
+      />
+    )
   })
 
   return (
