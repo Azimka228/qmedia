@@ -17,32 +17,34 @@ export const RadioSelect: FC<IRadioSelect> = ({
   defaultValue,
   onChange,
 }) => {
-  const [selectedValue, setSelectedValue] = useState<string>()
+  const [selectedValue, setSelectedValue] = useState<string>(defaultValue ?? "")
 
   useEffect(() => {
-    setSelectedValue(defaultValue)
+    setSelectedValue(defaultValue ?? "")
   }, [defaultValue])
 
-  const mappedItems = data.map((el, index) => {
+  const mappedItems = data.map(value => {
     const handleSetSelectedValue = () => {
-      if (el !== defaultValue) {
-        setSelectedValue(el)
-        if (onChange) {
-          onChange(el)
-        }
+      if (value === selectedValue) {
+        return
+      }
+
+      setSelectedValue(value)
+      if (onChange) {
+        onChange(value)
       }
     }
 
     return (
       <div
-        key={index}
-        className={cn(styles.item, {[styles.active]: el === selectedValue})}
+        key={value}
+        className={cn(styles.item, {[styles.active]: value === selectedValue})}
         onClick={handleSetSelectedValue}
       >
         <div className={styles.circle}>
           <div className={styles.smallCircle} />
         </div>
-        <span className={styles.text}>{el}</span>
+        <span className={styles.text}>{value}</span>
       </div>
     )
   })

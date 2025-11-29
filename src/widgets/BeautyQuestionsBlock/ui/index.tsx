@@ -3,9 +3,13 @@
 import React, {useState} from "react"
 
 import {ProductList} from "@entities/product"
-import {QuestionsList, QuestionsListWrapper} from "@entities/questions"
+import {
+  QuestionsList,
+  QuestionsListWrapper,
+  type Question,
+} from "@entities/questions"
 
-const QuestionsListData = [
+const QUESTIONS: Question[] = [
   {
     id: 1,
     title: "Сколько вам лет?",
@@ -44,7 +48,7 @@ export const BeautyQuestionsBlock = () => {
   const content = isSubmitted ? (
     <ProductList />
   ) : (
-    <QuestionsList data={QuestionsListData} onSubmit={handleSubmit} />
+    <QuestionsList data={QUESTIONS} onSubmit={handleSubmit} />
   )
 
   return (

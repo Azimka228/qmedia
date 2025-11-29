@@ -14,7 +14,7 @@ const SIBLING_COUNT = 1
 export const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [favouriteItems, setFavouriteItems] = useState<number[]>([])
-  const paginationRang = usePagination({
+  const paginationRange = usePagination({
     currentPage,
     totalCount: data.length,
     siblingCount: SIBLING_COUNT,
@@ -29,33 +29,29 @@ export const ProductList = () => {
   const lastIndex = currentPage * PAGE_SIZE
   const firstIndex = lastIndex - PAGE_SIZE
 
-  const mappedItems = data.map((el, index) => {
-    if (index >= firstIndex && index < lastIndex) {
-      const isFavouriteItem = favouriteItems.includes(el.id)
+  const currentItems = data.slice(firstIndex, lastIndex)
 
-      const handleAddFavouriteItem = () => {
-        if (!favouriteItems.includes(el.id)) {
-          setFavouriteItems(prevState => [...prevState, el.id])
-        }
-        if (favouriteItems.includes(el.id)) {
-          setFavouriteItems(prevState =>
-            prevState.filter(item => item !== el.id)
-          )
-        }
-      }
-      return (
-        <ProductListItem
-          price={el.price}
-          title={el.title}
-          image={el.image}
-          key={el.id}
-          isFavourite={isFavouriteItem}
-          oldPrice={el.oldPrice}
-          onClickFavourite={handleAddFavouriteItem}
-        />
+  const mappedItems = currentItems.map(product => {
+    const isFavouriteItem = favouriteItems.includes(product.id)
+
+    const handleToggleFavourite = () =>
+      setFavouriteItems(prevState =>
+        prevState.includes(product.id)
+          ? prevState.filter(id => id !== product.id)
+          : [...prevState, product.id]
       )
-    }
-    return null
+
+    return (
+      <ProductListItem
+        key={product.id}
+        price={product.price}
+        title={product.title}
+        image={product.image}
+        isFavourite={isFavouriteItem}
+        oldPrice={product.oldPrice}
+        onClickFavourite={handleToggleFavourite}
+      />
+    )
   })
 
   return (
@@ -63,7 +59,7 @@ export const ProductList = () => {
       <div className={styles.content}>{mappedItems}</div>
       <Pagination
         currentPage={currentPage}
-        data={paginationRang}
+        data={paginationRange}
         onChange={handleChangePage}
       />
     </div>
